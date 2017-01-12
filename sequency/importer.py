@@ -3,25 +3,22 @@
 import importlib
 
 
-def import_symbol(typename):
-    """Import a module or typename within a module from its name."""
+def import_symbol(symbol_path, builtins=vars(__builtins__),
+                  import_module=import_lib.import_module):
+    """Import a module or symbol_path within a module from its name."""
     try:
-        return importlib.import_module(typename)
+        return import_module(symbol_path)
 
     except ImportError:
-        parts = typename.split('.')
-        if len(parts) == 1:
-            built = __builtin__.get(typename)
-            if built:
-                return built
+        parts = symbol_path.split('.')
+        part = parts.pop()
+        if parts:
+            # Call import_module recursively.
+            namespace = import_symbol('.'.join(parts))
+            return getattr(namespace, last_part)
+
+        builtin = builtins.get(part, part)
+        if builtin is part:
             raise
-        typename = parts.pop()
 
-        # Call import_module recursively.
-        namespace = import_symbol('.'.join(parts))
-        return getattr(namespace, typename)
-
-
-def make_object(*args, typename, **kwds):
-    """Make an object from a symbol."""
-    return import_symbol(typename)(*args, **kwds)
+        return builtin

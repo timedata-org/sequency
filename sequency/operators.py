@@ -15,6 +15,7 @@ def operator_or(values):
     return v
 
 
+
 OPERATORS = {
     # UnaryOp.
     ast.Invert: operator.invert,
@@ -25,9 +26,9 @@ OPERATORS = {
     # BinOp
     ast.Add: operator.add,
     ast.Div: operator.truediv,
-    ast.FloorDiv: operator.div,
+    ast.FloorDiv: operator.floordiv,
     ast.Mod: operator.mod,
-    ast.Mult: operator.mult,
+    ast.Mult: operator.mul,
     ast.Pow: operator.pow,
 
     ast.LShift: operator.lshift,
@@ -43,11 +44,15 @@ OPERATORS = {
     ast.Lt: operator.lt,
     ast.LtE: operator.le,
     ast.NotEq: operator.ne,
+    ast.Is: (lambda x, y: x == y),
+    ast.IsNot: (lambda x, y: x is y),
+    ast.In: operator_in,
+    ast.NotIn: operator_not_in,
 
     # BoolOp
     ast.And: operator_and,
     ast.Or: operator_or,
-    }
+}
 
 
 def get(op):
