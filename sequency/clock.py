@@ -1,4 +1,3 @@
-from . registries import volatile, builtin
 from argparse import Namespace
 import time
 
@@ -19,7 +18,7 @@ class Tempo(object):
         return bars, beats
 
     def add(self, bars_beats1, bars_beats2):
-
+        pass
 
 
 class Clock(object):
@@ -27,7 +26,8 @@ class Clock(object):
         self._tempo = tempo
         self._get_time = get_time
 
-        self._running = False           self._marker_time = 0
+        self._running = False
+        self._marker_time = 0
         self._marker_bars_beats = 0, 0
 
     @property
