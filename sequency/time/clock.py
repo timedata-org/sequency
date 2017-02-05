@@ -1,6 +1,8 @@
 from argparse import Namespace
 import time
 
+from . bar_tempo import BarTempo
+
 
 """
 Variable names that end in _duration are "lengths of time" - time deltas in
