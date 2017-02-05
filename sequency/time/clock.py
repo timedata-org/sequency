@@ -2,23 +2,12 @@ from argparse import Namespace
 import time
 
 
-class Tempo(object):
-    def __init__(self, beat_duration=0.5, beats_per_bar=4)
-        self.beats_per_bar = beats_per_bar
-        self.beat_duration = beat_duration
+"""
+Variable names that end in _duration are "lengths of time" - time deltas in
+seconds.
 
-    def bars_beats(self, duration):
-        bar_duration = self.beats_per_bar * self.beat_duration
-        fractional_bars = duration / bar_duration
-        bars = int(fractional_bars)
-
-        partial_bar = fractional_bars - bars
-        beats = self.beats_per_bar * partial_bar
-
-        return bars, beats
-
-    def add(self, bars_beats1, bars_beats2):
-        pass
+Variable names that end in _time are absolute times in seconds - like the result
+of time.time().  """
 
 
 class Clock(object):
@@ -52,9 +41,7 @@ class Clock(object):
         mbars, mbeats = self._marker_bars_beats
 
         beats += mbeats
-        bars += (mbars + beats // self._tempo
-
-
+        bars += (mbars + beats // self._tempo)
         return bars + mbars, beats + mbeats
 
     @property
