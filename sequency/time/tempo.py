@@ -1,16 +1,10 @@
 class Tempo(object):
     """
-    A tempo that also knows about bars and has a callback when it's changed.
+    A tempo object that knows about bars and has an _on_change callback.
     """
-    def __init__(self, beat_duration=0.5, beats_per_bar=4, bpm=0):
-        self.beats_per_bar = beats_per_bar
+    def __init__(self, beat_duration=0.5, bpm=0):
         self._beat_duration = (bpm and 60 / bpm) or beat_duration
-
-    def _on_change(self, new_beat_duration):
-        """This is called before self.beat_duration or self.bpm are changed,
-        with the new value for beat_duration that will be set.
-        """
-        pass
+        self.callbacks = set()
 
     @property
     def beat_duration(self):
@@ -28,18 +22,12 @@ class Tempo(object):
 
     @bpm.setter
     def bpm(self, bpm):
-        assert bpm > 0
         self.beat_duration = 60 / bpm
 
-    def to_beats_bars(self, duration):
-        beats = duration / self._beat_duration
-
-        total_bars = beats / self.beats_per_bar
-        bars = int(total_bars)
-        beats -= bars * self.beats_per_bar
-
-        return beats, bars
-
-    def to_duration(self, beats, bars=0):
-        total_beats = beats + self.beats_per_bar * bars
-        return total_beats * self._beat_duration
+    def _on_change(self, new_beat_duration):
+        """
+        _on_change is called just before the tempo changes, caused by setting
+        beat_duration or bpm, but not beats_per_bar
+        """
+        for callback in self.callbacks:
+            callback()

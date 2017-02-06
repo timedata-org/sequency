@@ -14,8 +14,8 @@ class ClockTest(unittest.TestCase):
     def test_simple(self):
         system_time = MockTime(0)
         clock = Clock(system_time=system_time)
+
         self.assertEqual(clock.bpm, 120)
-        self.assertEqual(clock.to_beats_bars(61), (2.0, 30))
         self.assertEqual(clock.time, 0)
 
         system_time.time += 2
