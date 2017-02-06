@@ -8,8 +8,8 @@ class FixedScheduler(scheduler.Scheduler):
         self.fps = fps
         self.sleep = sleep
 
-    def run_frame(self):
-        super.run_frame()
+    def run(self):
+        super.run()
         self.sleep(self.delay())
 
     def delay(self):
@@ -24,6 +24,7 @@ class FixedScheduler(scheduler.Scheduler):
 
     @period.setter
     def period(self, period):
+        assert period
         self._period = period
 
     @property

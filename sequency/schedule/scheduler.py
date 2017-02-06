@@ -2,29 +2,29 @@ import time
 
 
 class Scheduler(object):
-    def __init__(self, render, timer=time.time):
-        self.render = render
-        self.timer = timer
+    def __init__(self, event, clock):
+        self.event = event
+        self.clock = clock
         self._reset()
 
     def _reset(self):
-        self.frame_index = 0
-        self.scheduler_start = self.timer()
+        self.index = 0
+        self.scheduler_start = self.clock.time
 
-    def run(self):
+    def run_loop(self):
         self._reset()
         while self.running:
-            self.run_frame()
-            self.frame_index += 1
+            self.run()
+            self.index += 1
 
-    def run_frame(self):
-        self.frame_start = self.timer()
-        self.render(self.frame_start)
-        self.frame_rendered = self.timer()
+    def run(self):
+        self.before_event = self.clock.time
+        self.event(self.frame_start)
+        self.after_event = self.clock.time
 
     @property
     def fps(self):
-        return self.frame_index / max(1, self.timer() - self.scheduler_start)
+        return self.index / max(1, self.clock() - self.scheduler_start)
 
     @property
     def period(self):
