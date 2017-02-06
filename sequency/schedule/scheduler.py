@@ -9,7 +9,7 @@ class Scheduler(object):
 
     def _reset(self):
         self.index = 0
-        self.scheduler_start = self.clock.time
+        self.scheduler_start = self.clock()
 
     def run_loop(self):
         self._reset()
@@ -18,9 +18,9 @@ class Scheduler(object):
             self.index += 1
 
     def run(self):
-        self.before_event = self.clock.time
-        self.event(self.frame_start)
-        self.after_event = self.clock.time
+        self.before_event = self.clock()
+        self.event()
+        self.after_event = self.clock()
 
     @property
     def fps(self):

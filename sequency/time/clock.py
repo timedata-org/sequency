@@ -39,5 +39,8 @@ class Clock(Tempo):
                 self._time = self.time
             self._running = running
 
+    def __call__(self):
+        return self.time
+
     def _on_change(self, new_beat_duration):
         self.time *= new_beat_duration / self.tempo.beat_duration
