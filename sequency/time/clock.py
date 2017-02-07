@@ -20,6 +20,7 @@ class Clock(Tempo):
 
     @time.setter
     def time(self, time):
+        t = self._time
         if self._running:
             self._time = self.system_time() - time
         else:
@@ -43,4 +44,4 @@ class Clock(Tempo):
         return self.time
 
     def _on_change(self, new_beat_duration):
-        self.time *= new_beat_duration / self.tempo.beat_duration
+        self.time *= new_beat_duration / self.beat_duration
