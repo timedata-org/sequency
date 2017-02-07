@@ -1,36 +1,25 @@
-from . import scheduler
+import time
+from . import runner, frequency
 
 
-class FixedScheduler(scheduler.Scheduler):
-    def __init__(self, render, fps=60, sleep=time.sleep, **kwds):
-        super().__init__(render, **kwds)
+def logged_sleep(self, time):
+    if time > 0:
+        time.sleep(time)
+    elif time < 0:
+        print('ERROR: ran out of time in scheduling')
 
-        self.fps = fps
+
+class FixedScheduler(object):
+    def __init__(self, clock, event, frequency, sleep=logged_sleep):
+        self.runner = runner.Runner(clock, event, self.reschedule)
+        self.frequency = frequency
         self.sleep = sleep
 
-    def run(self):
-        super.run()
+    def reschedule(self):
         self.sleep(self.delay())
 
     def delay(self):
-        # TODO: this is wrong if we change the fps over time!
-        offset = (self.frame_index + 1) * self.period
-        self.next_time = self.scheduler_start + offset
+        # TODO: this is wrong if we change the frequency over time!
+        offset_time = (self.runner.index + 1) * self.frequency.period
+        self.next_time = self.runner.start_time + offset_time
         return self.next_time - self.current_time
-
-    @property
-    def period(self):
-        return self._period
-
-    @period.setter
-    def period(self, period):
-        assert period
-        self._period = period
-
-    @property
-    def fps(self):
-        return 1.0 / self.period
-
-    @fps.setter
-    def fps(self, fps):
-        self.period = 1.0 / fps

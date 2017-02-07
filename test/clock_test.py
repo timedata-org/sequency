@@ -16,28 +16,28 @@ class ClockTest(unittest.TestCase):
         clock = Clock(system_time=system_time)
 
         self.assertEqual(clock.bpm, 120)
-        self.assertEqual(clock.time, 0)
+        self.assertEqual(clock(), 0)
 
         system_time.time += 2
-        self.assertEqual(clock.time, 0)  # Not running.
+        self.assertEqual(clock(), 0)  # Not running.
 
         clock.running = True
-        self.assertEqual(clock.time, 0)  # Running, but time hasn't advanced
+        self.assertEqual(clock(), 0)  # Running, but time hasn't advanced
 
         system_time.time += 1
-        self.assertEqual(clock.time, 1)  # Running.
+        self.assertEqual(clock(), 1)  # Running.
 
         system_time.time += 3
-        self.assertEqual(clock.time, 4)  # Running.
+        self.assertEqual(clock(), 4)  # Running.
 
         clock.running = False
-        self.assertEqual(clock.time, 4)  # Not running.
+        self.assertEqual(clock(), 4)  # Not running.
 
         system_time.time += 23
-        self.assertEqual(clock.time, 4)  # Not running.
+        self.assertEqual(clock(), 4)  # Not running.
 
         clock.running = True
-        self.assertEqual(clock.time, 4)  # Not running.
+        self.assertEqual(clock(), 4)  # Not running.
 
         system_time.time += 5
-        self.assertEqual(clock.time, 9)  # Not running.
+        self.assertEqual(clock(), 9)  # Not running.

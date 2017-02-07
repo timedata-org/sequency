@@ -1,5 +1,6 @@
 import unittest
 from sequency.time.bars import BarTempo
+from sequency.time.tempo import Tempo
 
 
 class TempoTest(unittest.TestCase):
@@ -16,3 +17,10 @@ class TempoTest(unittest.TestCase):
             beats, bars = tempo.to_beats_bars(x)
             roundtrip = tempo.to_duration(beats, bars)
             self.assertAlmostEqual(x, roundtrip)
+
+    def test_setters(self):
+        tempo = Tempo(bpm=180)
+        self.assertEqual(tempo.beat_duration, 1 / 3)
+        self.assertEqual(tempo.bpm, 180)
+        tempo.bpm = 120
+        self.assertEqual(tempo.beat_duration, 1 / 2)
