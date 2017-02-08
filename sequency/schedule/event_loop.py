@@ -2,7 +2,17 @@ import time
 
 
 class EventLoop(object):
+    """
+    Repeatedly run and reschedule an event.
+    """
     def __init__(self, clock, event, reschedule):
+        """
+        Args:
+          clock: a clock function that returns a non-decreasing time.
+          event: the event to run.
+          reschedule: a function that reschedules this event. It might be
+            a sleep, or nothing at all, or something else.
+        """
         self.clock = clock
         self.event = event
         self.reschedule = reschedule
