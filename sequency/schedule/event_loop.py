@@ -24,8 +24,10 @@ class EventLoop(object):
 
     @property
     def fps(self):
-        return self.run_count / max(1, self.clock() - self.start_time)
+        elapsed = self.clock() - self.start_time
+        return self.run_count / max(1, elapsed)
 
     @property
     def period(self):
-        return 1.0 / self.fps
+        elapsed = self.clock() - self.start_time
+        return elapsed / max(1, self.run_count)
