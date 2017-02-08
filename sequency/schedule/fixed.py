@@ -1,5 +1,5 @@
 import time
-from . import runner, frequency
+from . import runner
 
 
 def logged_sleep(self, time):

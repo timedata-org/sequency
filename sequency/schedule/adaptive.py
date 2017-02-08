@@ -8,7 +8,6 @@ class AdaptiveScheduler(fixed.FixedScheduler):
 
     def run_frame(self):
         self.start_time = self.timer()
-        self.render(
 
         offset = (self.frame_index + 1) * self.period
         self.next_time = self.start_time + offset
