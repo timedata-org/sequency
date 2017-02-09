@@ -1,1 +1,1 @@
-__all__ = 'adaptive', 'event_loop', 'fixed', 'has_frequency'
+__all__ = 'adaptive', 'loop', 'fixed', 'has_frequency'
