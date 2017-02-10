@@ -3,6 +3,12 @@ from . import sleep
 
 
 class FixedLoop(sleep.SleepLoop):
+    """A FixedLoop repeats with a fixed frequency, using sleep.
+
+    The loop tries to match the absolute time each cycle, so systematic errors
+    in sleep or clock arithmetic should even out over time.
+
+    """
     def __init__(self, frequency=0, period=0, **kwds):
         super().__init__(**kwds)
         self.frequency = has_frequency.HasFrequency(
