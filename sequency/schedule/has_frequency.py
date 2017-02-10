@@ -1,32 +1,27 @@
 class HasFrequency(object):
-    DEFAULT_FREQUENCY = 60.0
-
     def __init__(self, frequency=0, period=0, on_change=None):
-        if period:
-            assert not frequency
-            self.period = period
-        else:
-            self.frequency = frequency or DEFAULT_FREQUENCY
-        self.on_change = on_change or self.on_change
+        if (not period) + (not frequency) != 1:
+            raise ValueError('Must set exactly one of period and frequency')
+        self._frequency = frequency if frequency else 1.0 / period
 
     @property
     def period(self):
-        return self._period
+        return 1.0 / self._frequency
 
     @period.setter
     def period(self, period):
         assert period > 0
-        self.on_change(period)
-        self._period = period
+        self.frequency = 1.0 / period
 
     @property
     def frequency(self):
-        return 1.0 / self.period
+        return self._frequency
 
     @frequency.setter
     def frequency(self, frequency):
         assert frequency > 0
-        self.period = 1.0 / frequency
+        self.on_change(frequency)
+        self._frequency = frequency
 
-    def on_change(self, next_period):
+    def on_change(self, next_frequency):
         pass
