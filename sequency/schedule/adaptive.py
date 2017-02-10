@@ -1,35 +1,20 @@
-from . import fixed
+from . import sleep
 
 
-class AdaptiveScheduler(fixed.FixedScheduler):
-    def __init__(self, render, duty_cycle=0.5, **kwds):
-        super().__init__(render, **kwds)
+class AdaptiveLoop(sleep.SleepLoop):
+    def __init__(self, duty_cycle=0.5, **kwds):
+        assert 0 < duty_cycle <= 1.0
+        super().__init__(**kwds)
         self.duty_cycle = duty_cycle
+        self.duty_sleep = 1 / duty_cycle - 1
+        self.accumulator = 0
 
-    def run_frame(self):
-        self.start_time = self.timer()
+    def delay(self):
+        self.accumulate(self.after_action_time - self.before_action_time)
+        return self.mean() * self.duty_sleep
 
-        offset = (self.frame_index + 1) * self.period
-        self.next_time = self.start_time + offset
-        self.current_time = self.timer()
-        self.delay = self.next_time - self.current_time
-        if self.delay > 0:
-            self.sleep(delay)
-        else:
-            self.report_errors(self)
+    def accumulate(self, elapsed_time):
+        self.accumulator += elapsed_time
 
-    @property
-    def period(self):
-        return self._period
-
-    @period.setter
-    def period(self, period):
-        self._period = period
-
-    @property
-    def fps(self):
-        return 1.0 / self.period
-
-    @fps.setter
-    def fps(self, fps):
-        self.period = 1.0 / fps
+    def mean(self):
+        return self.accumulator / max(1, self.count)

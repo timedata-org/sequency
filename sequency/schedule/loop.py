@@ -1,11 +1,8 @@
-import time
-
-
 class Loop(object):
     """
     Repeatedly run and reschedule an action.
     """
-    def __init__(self, clock, action, reschedule=None):
+    def __init__(self, clock, action):
         """
         Args:
           clock: a clock function that returns a non-decreasing time.
@@ -14,26 +11,22 @@ class Loop(object):
             a sleep, or nothing at all, or something else.
         """
         self.clock = clock
-        self.action = action or self.action
-        self.reschedule = reschedule or self.reschedule
+        self.action = action
 
     def run(self):
         self.count = 0
         self.start_time = self.clock()
 
         while self.running:
-            self.run_one_action()
+            self.run_once()
             self.count += 1
 
-    def run_one_action(self):
-        self.before_action = self.clock()
+    def run_once(self):
+        self.before_action_time = self.clock()
         self.action()
 
-        self.after_action = self.clock()
+        self.after_action_time = self.clock()
         self.reschedule()
-
-    def action(self):
-        pass
 
     def reschedule(self):
         pass
